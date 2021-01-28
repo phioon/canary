@@ -7,7 +7,7 @@ DB_DEFAULT = {
     'ENGINE': 'django.db.backends.postgresql',
     'USER': 'canary_dev',
     'NAME': 'canary_dev',
-    'PASSWORD': '#P1q2w3e4r$Canary',
+    'PASSWORD': '#P1q2w3e4r$Infra',
 }
 GAE_PROJECT = 'canary'
 GAE_QUEUES = {
@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'canary',
+    'notification',
 
 ]
 
