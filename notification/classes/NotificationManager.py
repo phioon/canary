@@ -1,4 +1,4 @@
-from notification.models import Realtime
+from notification import locale
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -11,26 +11,25 @@ class NotificationManager:
     db = firestore.client()
 
     def notificationmanager(self, data):
-        if data['payload']['type'] == 'realtime':
+        if data['payload']['comp'] == 'realtime':
             self.notificationrealtime(data)
-        elif data['payload']['type'] == 'email':
+        elif data['payload']['comp'] == 'email':
             self.notificationemail(data)
-        elif data['payload']['type'] == 'push':
+        elif data['payload']['comp'] == 'push':
             self.notificationpush(data)
 
     def notificationrealtime(self, data):
-        message = ''
-        eventid = data['eventid']
+        event_id = data['event_id']
         username = data['payload']['username']
-        language = data['payload']['language']
+        lang_id = data['payload']['language']
+        comp = data['payload']['comp']
         asset_symbol = data['payload']['asset_symbol']
 
-        queryset = Realtime.objects.filter(event_id=eventid, language=language)
-        for obj in queryset:
-            message = obj.message
+        message = locale.get_translation(lang_id, comp, event_id)
+        message = message.replace("<<asset_symbol>>", asset_symbol)
 
-        eventid = eventid + '_' + asset_symbol
-        self.firebase(message, eventid, username)
+        event_id = event_id + '_' + asset_symbol
+        self.firebase(message, event_id, username)
 
     def notificationemail(self, data):
         print("email" + data)
